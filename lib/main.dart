@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
 import 'homepage_RDMD.dart';
-
+import 'signup_RDMD.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       brightness: Brightness.light,
       primarySwatch: Colors.green,
-      appBarTheme: AppBarTheme(
-        backgroundColor: const Color.fromARGB(255, 1, 56, 206),
-        foregroundColor: const Color.fromARGB(255, 255, 255, 255)
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromARGB(255, 1, 56, 206),
+        foregroundColor: Colors.white,
       ),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         bodyMedium: TextStyle(
           fontSize: 18,
-          color: const Color.fromARGB(255, 0, 0, 0),
-        )),
+          color: Colors.black,
+        ),
+      ),
     ),
     home: Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter Demo'),
-         // backgroundColor: Colors.blue,
-        ),
-        body: Center(
-          child: LoginForm(),
-        )),
+      appBar: AppBar(
+        title: const Text('Flutter Demo'),
+      ),
+      body: const Center(
+        child: LoginForm(),
+      ),
+    ),
   ));
 }
 
 class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -38,18 +42,17 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _passwordController = TextEditingController();
 
   void _handleLogin() {
-    String username = _usernameController.text;
-    String password = _passwordController.text;
+    String username = _usernameController.text.trim();
+    String password = _passwordController.text.trim();
 
     if (username.isNotEmpty && password.isNotEmpty) {
-      //ScaffoldMessenger.of(context).showSnackBar(
-      // SnackBar(content: Text('Login Successful'),)
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Homepage_RDMD())
-          );
+        context,
+        MaterialPageRoute(builder: (context) => const Homepage_RDMD()),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please enter both username and password'),
         ),
       );
@@ -58,32 +61,72 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Image.asset(
-        '../assets/mario.png',
-        width: 300,
-        height: 300,
-        fit: BoxFit.cover,
-      ),
-      Text('Sign In',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-      Text('Please enter your details'),
-      TextField(
-        controller: _usernameController,
-        decoration: InputDecoration(
-          labelText: 'Username',
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/mario.png',
+              width: 300,
+              height: 300,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Sign In',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text('Please enter your details'),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                labelText: 'Username',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+              obscureText: true,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _handleLogin,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 1, 56, 206),
+                foregroundColor: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 12),
+              ),
+              child: const Text('Login', style: TextStyle(fontSize: 18)),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 1, 56, 206),
+                foregroundColor: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 12),
+              ),
+              child: const Text('Sign Up', style: TextStyle(fontSize: 18)),
+            ),
+          ],
         ),
       ),
-      TextField(
-        controller: _passwordController,
-        decoration: InputDecoration(labelText: 'Password'),
-        obscureText: true,
-      ),
-      SizedBox(height: 20),
-      ElevatedButton(
-        onPressed: _handleLogin,
-        child: Text('Login'),
-      ),
-    ]);
+    );
   }
 }

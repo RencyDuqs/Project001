@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 
 class page1_RDMD extends StatelessWidget {
+  const page1_RDMD({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
